@@ -1,12 +1,7 @@
+from DataBase import addComicsDataToMng, addComicsToDB, addDataToCharacterTable, addDataToMngChars, createTables
 from Logger import getLogger
-import yaml
-from configparser import ConfigParser
 from marvel import Marvel
-
-
-# Loading the loggin config
-# with open('log_characterGetter.yaml', 'r') as stream:
-#     config = yaml.safe_load(stream)
+from ConfReader import readConfig
 
 
 # Creating the logger
@@ -21,9 +16,8 @@ comicList = dict()
 
 def checkConfigandAPI():
     try:
-        config = ConfigParser()
+        config = readConfig()
         config.read('config.ini')
-
         marvel_pub_key = config.get('marvel_config', 'PUB_KEY')
         marvel_priv_key = config.get('marvel_config', 'PRIV_KEY')
 
@@ -34,35 +28,49 @@ def checkConfigandAPI():
     logger.info(
         'Succesfully read configuration and established connection with API')
 
-    charBegin = "Captain America"
+    charBegin = "Winter"
+    charBegin2 = "Black widow"
     all_characters = characters
 
     # Serial code for the character
-    wintSId = getCharacters(charBegin, all_characters)
+    wintSId = getCharacter(charBegin, all_characters)
+    # Getting where this character appears in comics
     getWhereCharacterParticipated(characters, wintSId)
+    # Serial code for the character
+    print('-----------------------------------------------')
+    bWId = getCharacter(charBegin2, all_characters)
+    # Getting where this character appears in comics
+    getWhereCharacterParticipated(characters, bWId)
 
 
 # Getting the characters form Marvel Cinematic Universe(MCU) by the name provided when the fucntion is called
-def getCharacters(nameStartsW, all_char):
+def getCharacter(nameStartsW, all_char):
     global charName
     all_char = all_char.all(nameStartsWith=nameStartsW)
     for i in range(len(all_char['data']['results'])):
         print(all_char["data"]["results"][i]["id"],
               all_char["data"]["results"][i]["name"])
-        charName = all_char["data"]["results"][i]["name"]
+        name = all_char["data"]["results"][i]["name"]
+        charName = name
+        id = charName = all_char["data"]["results"][i]["id"]
+        # Adding found data to table in DB
+        addDataToCharacterTable(name, id)
+        addDataToMngChars(id, name)
         return all_char["data"]["results"][i]["id"]
 
+
 # Getting the comics where this particular character has appeared in
-
-
 def getWhereCharacterParticipated(characters, charId):
     all_char = characters.comics(charId)
-    print("The " + charName + " is seen on: ")
+    print("The ", charName, " appears on: ")
     for i in range(len(all_char['data']['results'])):
         print(all_char['data']['results'][int(i)]['title'])
-        item = {(all_char['data']['results'][int(i)]['title']): int(i)}
-        comicList.update(item)
+        item = all_char['data']['results'][int(i)]['title']
+        id = all_char['data']['results'][int(i)]['id']
+        addComicsToDB(id, item, charId)
+        addComicsDataToMng(id, item, charId)
 
 
-# calling the first method
+# calling the first method that creates a chain reaction for the rest
+createTables()
 checkConfigandAPI()
