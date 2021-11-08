@@ -2,3 +2,4 @@ config.ini
 log_characterGetter.yaml
 /log/*
 !/log/the_log_files_would_go_here
+log_characterGetter_prod.yaml
