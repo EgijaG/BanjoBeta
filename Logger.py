@@ -1,4 +1,5 @@
-import logging
+import logging.config
+import yaml
 
 
 def getLogger(name, log_config=None):
@@ -7,8 +8,10 @@ def getLogger(name, log_config=None):
     dateFmt = ("%d %b %Y %H:%M:%S")
 
     # logging config
-    logging.basicConfig(filename=name+'.log', encoding='utf-8',
-                        level=logging.INFO, format=timeFmt, datefmt=dateFmt)
+    with open('./log_characterGetter.yaml', 'r') as stream:
+        config = yaml.safe_load(stream)
+
+        logging.config.dictConfig(config)
 
     # return the prepared logger object
     return logging.getLogger(name)

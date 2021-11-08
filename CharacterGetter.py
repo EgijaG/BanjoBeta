@@ -1,19 +1,21 @@
-import logging
-import logging.config
+from Logger import getLogger
 import yaml
 from configparser import ConfigParser
 from marvel import Marvel
 
+
 # Loading the loggin config
-with open('log_characterGetter.yaml', 'r') as stream:
-    config = yaml.safe_load(stream)
-logging.config.dictConfig(config)
+# with open('log_characterGetter.yaml', 'r') as stream:
+#     config = yaml.safe_load(stream)
+
 
 # Creating the logger
-logger = logging.getLogger('root')
+logger = getLogger(__name__)
 logger.info("Marvel comics data retrieval service")
 
+# MCU Character name
 charName = ""
+# List of comics where charName participated
 comicList = dict()
 
 
@@ -38,7 +40,6 @@ def checkConfigandAPI():
     # Serial code for the character
     wintSId = getCharacters(charBegin, all_characters)
     getWhereCharacterParticipated(characters, wintSId)
-    print(comicList)
 
 
 # Getting the characters form Marvel Cinematic Universe(MCU) by the name provided when the fucntion is called
