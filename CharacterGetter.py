@@ -57,6 +57,7 @@ def getCharacter(nameStartsW, all_char):
         addDataToCharacterTable(name, id)
         addDataToMngChars(id, name)
         return all_char["data"]["results"][i]["id"]
+    logger.info('Succesfully inserted data into table Characters')
 
 
 # Getting the comics where this particular character has appeared in
@@ -69,6 +70,7 @@ def getWhereCharacterParticipated(characters, charId):
         id = all_char['data']['results'][int(i)]['id']
         addComicsToDB(id, item, charId)
         addComicsDataToMng(id, item, charId)
+    logger.info('Succesfully inserted data into table Comics')
 
 
 # calling the first method that creates a chain reaction for the rest

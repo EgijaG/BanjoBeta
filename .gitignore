@@ -6,3 +6,4 @@ log_characterGetter_prod.yaml
 log_DataBase.yaml
 __pycache__/
 Marvel-sqlite
+.DS_Store

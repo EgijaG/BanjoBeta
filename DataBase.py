@@ -1,12 +1,18 @@
 import certifi
 import pymongo
 import sqlite3
+import yaml
+import logging
+import logging.config
 from ConfReader import readConfig
 
-from Logger import getLogger
+# Loading the loggin configuration for DB
+with open('log_DataBase.yaml', 'r') as stream:
+    config = yaml.safe_load(stream)
 
-logger = getLogger(__name__)
+logging.config.dictConfig(config)
 
+logger = logging.getLogger('root')
 # Reading config file
 try:
     config = readConfig()
@@ -48,7 +54,6 @@ def addDataToCharacterTable(charName, id):
     except sqlite3.Error as e:
         print('Problem with inserting data into the table - ', e)
         logger.exception('')
-    logger.info('Succesfully inserted data into table Characters')
 
 
 def addComicsToDB(id, comicName, charID):
@@ -59,7 +64,7 @@ def addComicsToDB(id, comicName, charID):
     except sqlite3.Error as e:
         print('Problem with inserting data into the table - ', e)
         logger.exception('')
-    logger.info('Succesfully inserted data into table Comics')
+    
 
 
 def addDataFromMng():
