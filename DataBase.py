@@ -24,7 +24,7 @@ try:
     mng_pass = config.get('mongodb_config', 'mng_pass')
 except:
     logger.exception('')
-logger.info("Configuration succesfully read")
+logger.info('Configuration succesfully read')
 
 # SQLite variables
 con = sqlite3.connect('Marvel-sqlite')
@@ -35,10 +35,10 @@ ca = certifi.where()
 myclient = pymongo.MongoClient(
     f'mongodb+srv://{mng_user}:{mng_pass}@marvel.lh0ot.mongodb.net/Marvel?retryWrites=true&w=majority')
 logger.info(
-    "Connecting to: "f'mongodb+srv://{mng_user}:{mng_pass}@marvel.lh0ot.mongodb.net/Marvel?retryWrites=true&w=majority')
+    'Connecting to: 'f'mongodb+srv://{mng_user}:{mng_pass}@marvel.lh0ot.mongodb.net/Marvel?retryWrites=true&w=majority')
 
-mydb = myclient["Marvel"]
-mycol = mydb["Marvel"]
+mydb = myclient['Marvel']
+mycol = mydb['Marvel']
 
 
 def getMongoData():
@@ -64,7 +64,6 @@ def addComicsToDB(id, comicName, charID):
     except sqlite3.Error as e:
         print('Problem with inserting data into the table - ', e)
         logger.exception('')
-    
 
 
 def addDataFromMng():
@@ -72,13 +71,13 @@ def addDataFromMng():
         'Adding data to local database from the database that is located online')
     data = getMongoData()
     for d in data:
-        addDataToCharacterTable(d.get("ID"), d.get("name"))
+        addDataToCharacterTable(d.get('ID'), d.get('name'))
         addComicsToDB(d.get('ID'), d.get('title'), d.get('characterID'))
 
 
 def createTables():
     try:
-        logger.info("Creating a table, trying to execute query.")
+        logger.info('Creating a table, trying to execute query.')
         cur.execute(
             'CREATE TABLE Characters(ID INTEGER PRIMARY KEY NOT NULL UNIQUE, name TEXT NOT NULL UNIQUE);')
         cur.execute('CREATE TABLE Comics(ID INTEGER PRIMARY KEY NOT NULL UNIQUE, title TEXT NOT NULL UNIQUE, characterID INTEGER NOT NULL, FOREIGN KEY(characterID) REFERENCES Characters(ID));')
@@ -89,7 +88,7 @@ def createTables():
         cur.execute('DELETE FROM Characters')
         cur.execute('DELETE FROM Comics')
         con.commit()
-    logger.info("The tables have been created succesfully!")
+    logger.info('The tables have been created succesfully!')
 
 # Not the smartest way to handle the data insert with two equal methods, but I can't figure it out yet
 
@@ -100,7 +99,7 @@ def addDataToMngChars(id, name):
     data = getMongoData()
 
     for d in data:
-        if(d.get("ID") == id):
+        if(d.get('ID') == id):
             isDataThere = True
             print(d.get('ID'))
     if(isDataThere == False):
@@ -116,11 +115,39 @@ def addComicsDataToMng(id, title, charId):
     data = getMongoData()
 
     for d in data:
-        if(d.get("ID") == id):
+        if(d.get('ID') == id):
             isDataThere = True
-            print(d.get("title"))
+            print(d.get('title'))
     if(isDataThere == False):
         mngdata = {'ID': id, 'title': title, 'characterID': charId}
         mycol.insert_one(mngdata)
         addComicsToDB(id, title, charId)
     logger.info('Data insertion into Mongo DB - successfull')
+
+
+def executeSQLQuery(sqlQuery):
+    status = 0
+    try:
+        res = cur.execute(sqlQuery)
+        logger.info(res)
+        con.commit()
+    except con.Error as e:
+        logger.error(sqlQuery)
+        logger.error(
+            'A problem ocurred while trying to execute SQL query on database: '+str(e))
+        status = 1
+        pass
+    return status
+
+
+# def createMigrationsTable():
+#     result = []
+#     try:
+#         result = cur.execute(
+#             'CREATE TABLE migrations (id INT PRIMARY KEY NOT NULL AUTOINCREMENT, name TEXT, exec_ts INTEGER, exec_dt TEXT)')
+#         con.commit()
+#     except con.Error as e:
+#         logger.error('CREATE TABLE migrations (id INT PRIMARY KEY NOT NULL AUTOINCREMENT, name TEXT, exec_ts INTEGER, exec_dt TEXT)')
+#         logger.error('A problem ocurred creating migrations table in DB: ' + str(e))
+#         pass
+#     return result
