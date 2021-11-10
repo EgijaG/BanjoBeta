@@ -48,8 +48,6 @@ def getCharacter(nameStartsW, all_char):
     global charName
     all_char = all_char.all(nameStartsWith=nameStartsW)
     for i in range(len(all_char['data']['results'])):
-        print(all_char['data']['results'][i]['id'],
-              all_char['data']['results'][i]['name'])
         name = all_char['data']['results'][i]['name']
         charName = name
         id = charName = all_char['data']['results'][i]['id']
@@ -65,7 +63,6 @@ def getWhereCharacterParticipated(characters, charId):
     all_char = characters.comics(charId)
     print('The ', charName, ' appears on: ')
     for i in range(len(all_char['data']['results'])):
-        print(all_char['data']['results'][int(i)]['title'])
         item = all_char['data']['results'][int(i)]['title']
         id = all_char['data']['results'][int(i)]['id']
         addComicsToDB(id, item, charId)

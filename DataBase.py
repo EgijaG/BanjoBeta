@@ -17,9 +17,6 @@ logger = logging.getLogger('root')
 try:
     config = readConfig()
     config.read('config.ini')
-    password = config.get('mysql_config', 'DB_PASS')
-    url = config.get('mysql_config', 'DB_URL')
-    user = config.get('mysql_config', 'DB_USER')
     mng_user = config.get('mongodb_config', 'mng_user')
     mng_pass = config.get('mongodb_config', 'mng_pass')
 except:
