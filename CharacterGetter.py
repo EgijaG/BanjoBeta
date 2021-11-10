@@ -6,10 +6,10 @@ from ConfReader import readConfig
 
 # Creating the logger
 logger = getLogger(__name__)
-logger.info("Marvel comics data retrieval service")
+logger.info('Marvel comics data retrieval service')
 
 # MCU Character name
-charName = ""
+charName = ''
 # List of comics where charName participated
 comicList = dict()
 
@@ -28,8 +28,8 @@ def checkConfigandAPI():
     logger.info(
         'Succesfully read configuration and established connection with API')
 
-    charBegin = "Winter"
-    charBegin2 = "Black widow"
+    charBegin = 'Winter'
+    charBegin2 = 'Black widow'
     all_characters = characters
 
     # Serial code for the character
@@ -48,24 +48,21 @@ def getCharacter(nameStartsW, all_char):
     global charName
     all_char = all_char.all(nameStartsWith=nameStartsW)
     for i in range(len(all_char['data']['results'])):
-        print(all_char["data"]["results"][i]["id"],
-              all_char["data"]["results"][i]["name"])
-        name = all_char["data"]["results"][i]["name"]
+        name = all_char['data']['results'][i]['name']
         charName = name
-        id = charName = all_char["data"]["results"][i]["id"]
+        id = charName = all_char['data']['results'][i]['id']
         # Adding found data to table in DB
         addDataToCharacterTable(name, id)
         addDataToMngChars(id, name)
-        return all_char["data"]["results"][i]["id"]
+        return all_char['data']['results'][i]['id']
     logger.info('Succesfully inserted data into table Characters')
 
 
 # Getting the comics where this particular character has appeared in
 def getWhereCharacterParticipated(characters, charId):
     all_char = characters.comics(charId)
-    print("The ", charName, " appears on: ")
+    print('The ', charName, ' appears on: ')
     for i in range(len(all_char['data']['results'])):
-        print(all_char['data']['results'][int(i)]['title'])
         item = all_char['data']['results'][int(i)]['title']
         id = all_char['data']['results'][int(i)]['id']
         addComicsToDB(id, item, charId)
