@@ -10,6 +10,10 @@ Also retrieves comics list to find in which each of these characters appear.
 The character serial number serves as foreign key to reference Comics and Characters tables in the database, which is also the connection for data in the code.
 
 To start the application:
-1. Open the prepareenv.py file adn run it - will install all needed dependencies,
-2. Open the characterGetter.py file,
-3. Run the file(it is connected to all the other files and will execute the program).
+1. Clone this repo - git clone ...,
+2. cd to the repo,
+3. git flow init
+4. ./prepareDevEnv.sh or on mac bash prepareDevEnv.sh
+3. Run the command the script shows.
+
+Have fun! :)
