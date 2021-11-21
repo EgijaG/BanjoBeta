@@ -38,6 +38,11 @@ if [ $? -eq 0 ]; then echo "OK"; else echo "Problem getting python3 exec locatio
 echo "$python_exec_loc"
 echo "------------------------------------------------"
 
+echo "Running dependency setup"
+$python_exec_loc prepareenv.py
+if [ $? -eq 0 ]; then echo "OK"; else echo "Configuration test FAILED"; exit 1; fi
+echo "------------------------------------------------"
+
 echo "Running config tests"
 $python_exec_loc test_config.py
 if [ $? -eq 0 ]; then echo "OK"; else echo "Configuration test FAILED"; exit 1; fi

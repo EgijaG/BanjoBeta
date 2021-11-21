@@ -52,7 +52,7 @@ print('Checking Mongo DB connection >>>')
 mng_user = config.get('mongodb_config', 'mng_user')
 mng_pass = config.get('mongodb_config', 'mng_pass')
 myclient = pymongo.MongoClient(
-    f'mongodb+srv://{mng_user}:{mng_pass}@marvel.lh0ot.mongodb.net/Marvel?retryWrites=true&w=majority')
+    f'mongodb+srv://{mng_user}:{mng_pass}@marvel.lh0ot.mongodb.net/Marvel?retryWrites=true&w=majority&ssl=true&ssl_cert_reqs=CERT_NONE')
 srvData = myclient.admin.command('ismaster')
 assert srvData['ismaster'] == True
 print('OK')
