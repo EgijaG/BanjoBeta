@@ -10,7 +10,7 @@ handlers:
     class: logging.handlers.TimedRotatingFileHandler
     level: INFO
     formatter: complex
-    filename: characterGetter
+    filename: DataBase
     when: 'midnight'
     encoding: 'utf-8'
     delay: False
