@@ -30,9 +30,9 @@ ca = certifi.where()
 
 # MongoDB variables
 myclient = pymongo.MongoClient(
-    f'mongodb+srv://{mng_user}:{mng_pass}@marvel.lh0ot.mongodb.net/Marvel?retryWrites=true&w=majority')
+    f'mongodb+srv://{mng_user}:{mng_pass}@marvel.lh0ot.mongodb.net/Marvel?retryWrites=true&w=majority&ssl=true&ssl_cert_reqs=CERT_NONE')
 logger.info(
-    'Connecting to: 'f'mongodb+srv://{mng_user}:{mng_pass}@marvel.lh0ot.mongodb.net/Marvel?retryWrites=true&w=majority')
+    'Connecting to: 'f'mongodb+srv://{mng_user}:{mng_pass}@marvel.lh0ot.mongodb.net/Marvel?retryWrites=true&w=majority&ssl=true&ssl_cert_reqs=CERT_NONE')
 
 mydb = myclient['Marvel']
 mycol = mydb['Marvel']
