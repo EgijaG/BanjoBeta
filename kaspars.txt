@@ -1,0 +1,2 @@
+This is file to test my skills in git console.
+The grade: hopefully 10!
