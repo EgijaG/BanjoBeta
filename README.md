@@ -6,6 +6,8 @@ This is a uni project to learn making a constructor with:
 - database migration,
 - automated processes
 
+And learn to work with git in console(terminal). 
+
 The application retrieves data from Marvel API and searches for two specific characters.
 Also retrieves comics list to find in which each of these characters appear.
 The character serial number serves as foreign key to reference Comics and Characters tables in the database, which is also the connection for data in the code.
